@@ -1,0 +1,8 @@
+_testy/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.vscode/
+*.egg-info/
+.vscode/launch.json
+**/test.py
