@@ -1,0 +1,10 @@
+flask
+fastapi
+openai
+pydantic
+python-dotenv
+requests
+uvicorn
+pandas
+scikit-learn
+xgboost
