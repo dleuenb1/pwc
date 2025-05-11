@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useWorkbook } from "../context/WorkbookContext";
+import {API_URL} from "../constants";
 
 export interface WorksheetQueryRequest {
   column: string;
@@ -46,7 +47,7 @@ export const useWorksheetQuery = () => {
 
       const payload = transformData(availableHeaders, worksheetData, selectedColumn);
 
-      const response = await fetch("https://api.example.com/query", {
+      const response = await fetch(`${API_URL}/query`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

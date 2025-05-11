@@ -93,7 +93,14 @@ export const useWorkbookManager = () => {
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      try {
+      validateWorkBook();
+    }, 1500);
+
+    return () => clearInterval(interval);
+  }, [selectedColumn]);
+
+  const validateWorkBook = async () => {
+        try {
         const headersRaw = await getTablesHeaders();
         const headersValidation = validateHeaders(headersRaw);
         const headersSnap = snapshot(headersValidation.result);
@@ -149,10 +156,7 @@ export const useWorkbookManager = () => {
           setSelectedColumnStatus({ type: "error", message: errMsg });
         }
       }
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, [selectedColumn]);
+}
 
   const onSelectColumn = useCallback(
     (col: string | null) => {
@@ -161,9 +165,7 @@ export const useWorkbookManager = () => {
       if (validation.status.message !== selectedColumnStatus?.message) {
         setSelectedColumn(validation.result ?? null);
         setSelectedColumnStatus(validation.status);
-        setIsReadyToSubmit(
-          Boolean(validation.result && worksheetData.length > 0)
-        );
+        validateWorkBook();
       }
     },
     [selectedColumnStatus, worksheetData]

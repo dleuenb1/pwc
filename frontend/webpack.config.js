@@ -4,9 +4,12 @@ const devCerts = require("office-addin-dev-certs");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 const urlDev = "https://localhost:3000/";
-const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
+const urlProd = process.env.AI_EXC_PROD_URL; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
 
 async function getHttpsOptions() {
   const httpsOptions = await devCerts.getHttpsServerOptions();
@@ -15,6 +18,9 @@ async function getHttpsOptions() {
 
 module.exports = async (env, options) => {
   const dev = options.mode === "development";
+  process.env.REACT_APP_API_URL = process.env.REACT_APP_API_URL || "https://localhost:3000/api";
+  process.env.REACT_APP_APP_TEST_MODE = dev ? "true" : "false";
+
   const config = {
     devtool: "source-map",
     entry: {
@@ -92,6 +98,9 @@ module.exports = async (env, options) => {
       }),
       new webpack.ProvidePlugin({
         Promise: ["es6-promise", "Promise"],
+      }),
+      new webpack.DefinePlugin({
+        "process.env": JSON.stringify(process.env), // Inject all environment variables
       }),
     ],
     devServer: {

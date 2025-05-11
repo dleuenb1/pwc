@@ -22,7 +22,7 @@ const AuthView: React.FC = () => {
                 buttonComponent={loading ? <Spinner size="tiny" label="Wysyłanie..." /> : <>Sprawdź klucz</>}
                 insertText={sendLicenseKey}
             />
-            {authStatus && authStatus.status.type === "error" ? <Text size={200}
+            {authStatus && !authStatus.result ? <Text size={200}
                 style={{ marginBottom: 4, color: "red" }}
                 className={commonStyles.textWrap}>
                     {authStatus.status.message}
